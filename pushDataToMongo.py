@@ -18,11 +18,11 @@ with open('listFile.pickle', 'rb') as f:
     fileName = pickle.load(f)    
 
 
-database = client['book']
+database = client['documentCSDLDPT']
 
-collection = database['bookFeature']
+collection = database['docFeature']
 
-doc_path = 'D:\\Study\\python\\Find-Document-Web\\find_document\\doc\\documents'
+doc_path = 'D:\Document-CSDLDPT'
 
 
 for i in range(len(fileName)):

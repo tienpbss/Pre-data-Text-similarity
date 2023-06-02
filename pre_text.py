@@ -7,6 +7,8 @@ from nltk.stem.porter import PorterStemmer
 
 stemmer = PorterStemmer()
 
+
+
 def getText(filePath):
     '''Get text from pdf file'''
     doc = fitz.open(filePath)
@@ -29,14 +31,26 @@ def stem_words(text):
     stems = [stemmer.stem(word) for word in word_tokens]
     return ' '.join(stems)
 
+def remove_urls(text):
+    url_pattern = re.compile(r'https?://\S+|www\.\S+')
+    return re.sub(url_pattern, '', text)
+
+    '''convert to root word'''
+    word_tokens = nltk.word_tokenize(text)
+    stems = [stemmer.stem(word) for word in word_tokens]
+    return ' '.join(stems)
+
+
 def clean_text(filePath):
     text = getText(filePath)
     text = text.lower()
-    text = re.sub(r'http\S+', '', text) # remove url
+    text = remove_urls(text) # remove url
     # text = ''.join([i for i in text if not i.isdigit()]) #remove number
     text = re.sub(r'\d+', '', text) #remove number
-    text = re.sub(r'[^\w\s]', '', text) # remove special character, white space
+    text = re.sub(r'[^\w\s]', '', text) # remove special character
     text = remove_stopwords(text) # remove stop word
     text = stem_words(text) #conver words to root words
+    text = re.sub(r'_{2,}', '', text)
     text = text.encode('ascii', 'ignore').decode() #remove character not ascii
     return text
+
